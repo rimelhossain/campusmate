@@ -194,7 +194,7 @@ class Login extends StatelessWidget {
                   children: [
                     const Qstext("Don't have an account?"),
                     TextButton(
-                      onPressed: () => Navigator.pushReplacement(
+                      onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(builder: (_) => Signup()),
                       ),

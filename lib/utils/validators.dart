@@ -1,5 +1,4 @@
 import 'package:campusmate/utils/constants.dart';
-import 'package:flutter/material.dart';
 
 String? isValidEmail(String email) {
   if (email.isEmpty) {
@@ -90,8 +89,6 @@ String? finalCheck(
   // id and email match
   final idFromEmail = RegExp(r"[0-9]{6,7}").stringMatch(email);
 
-  debugPrint(idFromEmail);
-
   if (idFromEmail == null) {
     return "Invalid Email 2";
   }
@@ -111,11 +108,7 @@ String? finalCheck(
     return "Invalid Email 3";
   }
 
-  debugPrint(programFromEmail);
-  debugPrint(id.substring(0, 3));
   final programFromId = program[id.substring(0, 3)];
-
-  debugPrint(programFromId);
 
   if (programFromId == null) {
     return "Invalid Student ID";

@@ -1,3 +1,4 @@
+import 'package:campusmate/model/student.dart';
 import 'package:campusmate/utils/validators.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -5,10 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 part 'cm_event.dart';
 part 'cm_state.dart';
 
-/*
-1. Done: Create a Logout option
-2. TODO: Create a forgot password option
-*/
+late Student student;
 
 class CmBloc extends Bloc<CmEvent, CmState> {
   CmBloc() : super(CmInitial()) {
@@ -83,6 +81,8 @@ class CmBloc extends Bloc<CmEvent, CmState> {
             "email": event.email,
           });
 
+          student = Student(sbclient.auth.currentUser!.userMetadata!);
+
           return emit(SignUpSuccessState());
         }
       } on AuthApiException catch (e) {
@@ -135,6 +135,8 @@ class CmBloc extends Bloc<CmEvent, CmState> {
       if (resp.user?.emailConfirmedAt == null) {
         return emit(UnconfirmedEmailState(event.email));
       }
+
+      student = Student(sbclient.auth.currentUser!.userMetadata!);
 
       return emit(LoginSuccessState());
     });
