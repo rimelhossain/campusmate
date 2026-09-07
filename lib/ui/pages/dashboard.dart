@@ -24,6 +24,7 @@ class Dashboard extends StatelessWidget {
         }
       },
       child: Scaffold(
+        backgroundColor: Color(0xFFE0F4EA),
         body: SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(24),

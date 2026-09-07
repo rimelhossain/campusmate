@@ -11,7 +11,7 @@ class HeroCard extends StatelessWidget {
         borderRadius: BorderRadiusGeometry.circular(24),
       ),
       elevation: 4,
-      color: const Color(0xFFF5AC7C),
+      color: const Color(0xFF1B3F2D),
       child: Container(
         padding: const EdgeInsets.all(24),
         width: double.infinity,
@@ -21,22 +21,22 @@ class HeroCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Wrap(
-              alignment: WrapAlignment.spaceBetween,
-              runAlignment: WrapAlignment.center,
+            Flex(
+              direction: Axis.horizontal,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              verticalDirection: VerticalDirection.down,
               spacing: 16,
-              runSpacing: 16,
-              crossAxisAlignment: WrapCrossAlignment.center,
               children: [
                 Qstext(
                   "Trimester Fee",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
                 ),
                 Container(
                   height: 40,
-                  width: 100,
+                  width: 120,
                   decoration: BoxDecoration(
-                    color: Colors.teal,
+                    color: Color(0xFFE69E2A),
                     borderRadius: BorderRadiusGeometry.circular(12),
                   ),
                   child: Center(
@@ -44,7 +44,7 @@ class HeroCard extends StatelessWidget {
                       "3 Days Left",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                   ),
@@ -59,18 +59,18 @@ class HeroCard extends StatelessWidget {
                 fontSize: 24,
                 fontFamily: "Quicksand",
                 fontWeight: FontWeight.bold,
+                color: Colors.white
               ),
             ),
-            Wrap(
-              alignment: WrapAlignment.spaceBetween,
-              runAlignment: WrapAlignment.center,
-              crossAxisAlignment: WrapCrossAlignment.center,
+            Flex(
+              direction: Axis.horizontal,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween, 
+              crossAxisAlignment: CrossAxisAlignment.center,
               spacing: 16,
-              runSpacing: 16,
               children: [
                 Qstext(
                   "Deadline: 12 September",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                 ),
                 ElevatedButton.icon(
                   onPressed: () {},
