@@ -14,12 +14,12 @@ One Unified Platform for UIU students
 - CGPA Calculator and Planner
 
 ## Technology Stack
-- [Dart](https://dart.dev)
-- [Flutter](https://flutter.dev)
-- [Bloc](https://bloclibrary.dev)
-- [Supabase Postgres](https://supabase.com/database)
-- [Supabase Auth](https://supabase.com/auth)
-- [Brevo SMTP](https://www.brevo.com/)
+- [<img height="16px" src="https://dart.dev/assets/img/logo/dart-192.svg"></img> Dart](https://dart.dev)
+- [<img height="16px" src="https://cdn-bdmhh.nitrocdn.com/JNiKLBzGPsfbQJqUQoZqIbUrxBklWopT/assets/images/optimized/rev-262b80e/objectbox.io/wordpress/wp-content/uploads/2024/07/flutter-mobile-300x300.png"></img> Flutter](https://flutter.dev)
+- [<img height="16px" src="https://bloclibrary.dev/_astro/bloc.DJLDGT9c_Z1HYzg2.svg"></img> Bloc](https://bloclibrary.dev)
+- [<img height="16px" src="https://community.appsmith.com/sites/default/files/2024-03/supabase-logo.jpg"></img> Supabase Postgres](https://supabase.com/database)
+- [<img height="16px" src="https://community.appsmith.com/sites/default/files/2024-03/supabase-logo.jpg"></img> Supabase Auth](https://supabase.com/auth)
+- [<img height="16px" src="https://cdn.brandfetch.io/id87KI8yDJ/w/200/h/200/theme/dark/icon.jpeg?c=1dxbfHSJFAPEGdCLU4o5B"></img> Brevo SMTP](https://www.brevo.com/)
 
 ## Installation
 Not for installation yet. Development in progress....
