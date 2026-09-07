@@ -24,7 +24,7 @@ class Dashboard extends StatelessWidget {
         }
       },
       child: Scaffold(
-        backgroundColor: Color(0xFFE0F4EA),
+        backgroundColor: Color(0xFFE9ECEA),
         body: SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(24),
@@ -33,9 +33,32 @@ class Dashboard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(width: double.infinity),
-                const Qstext(
-                  "Assalamualaikum,",
-                  style: TextStyle(fontSize: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Qstext(
+                      "Assalamualaikum,",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0, right: 8.0),
+                      child: IconButton(
+                        onPressed: () {},
+                        style: ButtonStyle(
+                          backgroundColor: WidgetStatePropertyAll(Colors.white),
+                          fixedSize: WidgetStatePropertyAll(Size(44, 44)),
+                        ),
+                        constraints: BoxConstraints.tight(Size(44, 44)),
+
+                        tooltip: "Notifications",
+                        icon: Icon(
+                          Icons.notifications_outlined,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 Qstext(
                   student.name,
@@ -63,11 +86,7 @@ class Dashboard extends StatelessWidget {
                           "Marketplace",
                           Icons.shopping_bag_outlined,
                         ),
-                        CampusLifeFeatureCard(
-                          "Lost And Found",
-                          Icons.search,
-                          
-                        ),
+                        CampusLifeFeatureCard("Lost And Found", Icons.search),
                         CampusLifeFeatureCard(
                           "Fresher's Corner",
                           Icons.home_outlined,
