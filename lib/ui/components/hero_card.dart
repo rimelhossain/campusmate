@@ -21,39 +21,42 @@ class HeroCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Flex(
-              direction: Axis.horizontal,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              verticalDirection: VerticalDirection.down,
-              spacing: 16,
-              children: [
-                Qstext(
-                  "Trimester Fee",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Flex(
+                direction: Axis.horizontal,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                verticalDirection: VerticalDirection.down,
+                spacing: 16,
+                children: [
+                  Qstext(
+                    "Trimester Fee",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                Container(
-                  height: 40,
-                  width: 120,
-                  decoration: BoxDecoration(
-                    color: Color(0xFFE09C2E),
-                    borderRadius: BorderRadiusGeometry.circular(12),
-                  ),
-                  child: Center(
-                    child: Qstext(
-                      "3 Days Left",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                  Container(
+                    height: 40,
+                    width: 120,
+                    decoration: BoxDecoration(
+                      color: Color(0xFFE09C2E),
+                      borderRadius: BorderRadiusGeometry.circular(12),
+                    ),
+                    child: Center(
+                      child: Qstext(
+                        "3 Days Left",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             Text(
               "Payment Due Soon!!!",
@@ -66,47 +69,50 @@ class HeroCard extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
-            Flex(
-              direction: Axis.horizontal,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              spacing: 16,
-              children: [
-                Qstext(
-                  "Deadline: 12 September",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                ElevatedButton.icon(
-                  onPressed: () {},
-                  iconAlignment: IconAlignment.end,
-                  icon: Icon(Icons.arrow_forward, color: Colors.black),
-                  label: Qstext(
-                    "Calculate",
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Flex(
+                direction: Axis.horizontal,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                spacing: 16,
+                children: [
+                  Qstext(
+                    "Deadline: 12 September",
                     style: TextStyle(
-                      color: Colors.black,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
                   ),
-                  style: ButtonStyle(
-                    padding: WidgetStatePropertyAll(
-                      const EdgeInsetsDirectional.symmetric(
-                        horizontal: 26,
-                        vertical: 20,
+                  ElevatedButton.icon(
+                    onPressed: () {},
+                    iconAlignment: IconAlignment.end,
+                    icon: Icon(Icons.arrow_forward, color: Colors.black),
+                    label: Qstext(
+                      "Calculate",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    shape: WidgetStatePropertyAll(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadiusGeometry.circular(12),
+                    style: ButtonStyle(
+                      padding: WidgetStatePropertyAll(
+                        const EdgeInsetsDirectional.symmetric(
+                          horizontal: 26,
+                          vertical: 20,
+                        ),
                       ),
+                      shape: WidgetStatePropertyAll(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadiusGeometry.circular(12),
+                        ),
+                      ),
+                      backgroundColor: WidgetStatePropertyAll(Colors.white),
                     ),
-                    backgroundColor: WidgetStatePropertyAll(Colors.white),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

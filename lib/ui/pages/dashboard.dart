@@ -4,6 +4,7 @@ import 'package:campusmate/ui/components/academics_feature_card.dart';
 import 'package:campusmate/ui/components/campus_life_feature_card.dart';
 import 'package:campusmate/ui/components/hero_card.dart';
 import 'package:campusmate/ui/pages/landing.dart';
+import 'package:campusmate/ui/pages/lost_feed.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -86,10 +87,19 @@ class Dashboard extends StatelessWidget {
                           "Marketplace",
                           Icons.shopping_bag_outlined,
                         ),
-                        CampusLifeFeatureCard("Lost And Found", Icons.search),
+                        CampusLifeFeatureCard(
+                          "Lost And Found",
+                          Icons.search,
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: ((context) => LostFeed()),
+                            ),
+                          ),
+                        ),
                         CampusLifeFeatureCard(
                           "Fresher's Corner",
-                          Icons.home_outlined,
+                          Icons.home_outlined
                         ),
                       ],
                     ),
