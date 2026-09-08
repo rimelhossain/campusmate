@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:campusmate/model/student.dart';
 import 'package:campusmate/utils/validators.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'cm_event.dart';
@@ -181,6 +185,59 @@ class CmBloc extends Bloc<CmEvent, CmState> {
         return emit(SetPassErrorState(e.message));
       }
       return emit(SetPassSuccessState());
+    });
+
+    on<PostTypeSelectedEvent>((event, emit) {
+      String type = event.type;
+      if (event.type == "lost") {
+        type = "found";
+      } else {
+        type = "lost";
+      }
+      emit(PostTypeSelectedState(type));
+    });
+    on<TimePickedEvent>(
+      (event, emit) => emit(TimePickedState(event.pickedTime)),
+    );
+
+    on<ImagePickedEvent>(
+      (event, emit) => emit(PickedImageState(event.pickedImage)),
+    );
+
+    on<InputClearEvent>((event, emit) => emit(InputClearedState()));
+
+    on<AddPostEvent>((event, emit) async {
+      if ([
+        event.title,
+        event.description,
+        event.location,
+      ].any((s) => s.isEmpty)) {
+        return emit(
+          PostFailedState(
+            "Please Fill out the Above informations correctly and try again",
+          ),
+        );
+      }
+      emit(PostingState());
+      try {
+        final insertedRow = await sbclient.from("posts").insert({
+          "title": event.title,
+          "desc": event.description,
+          "location": event.location,
+          "author": sbclient.auth.currentUser!.id,
+          "lostOrFound": event.type,
+        }).select();
+        if (event.imageFile != null) {
+          final fullPath = await sbclient.storage
+              .from("lostAndFound")
+              .upload(insertedRow.first['id'], event.imageFile!);
+          print(fullPath);
+        }
+        return emit(PostSuccessState());
+      } catch (e) {
+        print(e);
+        return emit(PostFailedState("An Error Occured!!!"));
+      }
     });
   }
 }

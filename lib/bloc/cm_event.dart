@@ -58,3 +58,37 @@ final class SetPassEvent extends CmEvent {
 
   const SetPassEvent(this.pass1, this.pass2);
 }
+
+final class PostTypeSelectedEvent extends CmEvent {
+  final String type;
+  const PostTypeSelectedEvent(this.type);
+}
+
+final class TimePickedEvent extends CmEvent {
+  final TimeOfDay? pickedTime;
+  const TimePickedEvent(this.pickedTime);
+}
+
+final class ImagePickedEvent extends CmEvent {
+  final XFile? pickedImage;
+  const ImagePickedEvent(this.pickedImage);
+}
+
+final class InputClearEvent extends CmEvent {}
+
+final class AddPostEvent extends CmEvent {
+  final String type;
+  final String title;
+  final String description;
+  final String location;
+  final File? imageFile;
+  final TimeOfDay time;
+  const AddPostEvent(
+    this.type,
+    this.title,
+    this.description,
+    this.location,
+    this.imageFile,
+    this.time,
+  );
+}

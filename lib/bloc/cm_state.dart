@@ -76,3 +76,29 @@ final class SetPassErrorState extends CmState {
 }
 
 final class SetPassSuccessState extends CmState {}
+
+final class PostTypeSelectedState extends CmState {
+  final String type;
+  const PostTypeSelectedState(this.type);
+}
+
+final class TimePickedState extends CmState {
+  final TimeOfDay? pickedTime;
+  const TimePickedState(this.pickedTime);
+}
+
+final class PickedImageState extends CmState {
+  final XFile? pickedImage;
+  const PickedImageState(this.pickedImage);
+}
+
+final class InputClearedState extends CmState {}
+
+final class PostingState extends CmState {}
+
+final class PostSuccessState extends CmState {}
+
+final class PostFailedState extends CmState {
+  final String msg;
+  const PostFailedState(this.msg);
+}
