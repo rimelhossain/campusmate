@@ -33,11 +33,13 @@ class _CreatePostState extends State<CreatePost> {
         child: BlocConsumer<CmBloc, CmState>(
           listener: (context, state) {
             if (state is PostFailedState) {
+              FocusManager.instance.primaryFocus?.unfocus();
               ScaffoldMessenger.of(
                 context,
               ).showSnackBar(SnackBar(content: Qstext(state.msg)));
             } else if (state is PostSuccessState) {
               Navigator.pop(context);
+              context.read<CmBloc>().add(LoadItemsEvent());
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Qstext("Post Added Successfully"),
@@ -302,10 +304,8 @@ class _CreatePostState extends State<CreatePost> {
                               ),
                             );
                           },
-                          style: ButtonStyle(
-                            fixedSize: WidgetStatePropertyAll(
-                              Size(double.infinity, 48),
-                            ),
+                          style: FilledButton.styleFrom(
+                            fixedSize: Size(double.infinity, 48),
                           ),
                           child: state is PostingState
                               ? CircularProgressIndicator(

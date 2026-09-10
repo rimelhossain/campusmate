@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:campusmate/model/lost_and_found_item.dart';
 import 'package:campusmate/model/student.dart';
 import 'package:campusmate/utils/validators.dart';
 import 'package:flutter/material.dart';
@@ -237,6 +238,45 @@ class CmBloc extends Bloc<CmEvent, CmState> {
       } catch (e) {
         print(e);
         return emit(PostFailedState("An Error Occured!!!"));
+      }
+    });
+
+    on<LoadItemsEvent>((event, emit) async {
+      try {
+        emit(ItemsLoadingState());
+        final resp = await sbclient
+            .from("posts")
+            .select()
+            .order("created_at", ascending: false);
+        final items = resp.map((itemData) {
+          final List<String> timeString = itemData["time"].split(":");
+          return LostAndFoundItem(
+            id: itemData["id"],
+            createdAt: DateTime.parse(itemData["created_at"]),
+            title: itemData["title"],
+            description: itemData["desc"],
+            isResolved: itemData["isResolved"],
+            authorId: itemData["author"],
+            type: itemData["lostOrFound"],
+            location: itemData["location"],
+            time: TimeOfDay(
+              hour: int.parse(timeString.first),
+              minute: int.parse(timeString[1]),
+            ),
+            image: Image.network(
+              sbclient.storage
+                  .from("lostAndFound")
+                  .getPublicUrl(itemData["id"]),
+              cacheWidth: 128,
+              width: 128,
+              fit: BoxFit.fitWidth,
+            ),
+          );
+        }).toList();
+        return emit(ItemLoadedState(items));
+      } catch (e) {
+        print(e);
+        return emit(ItemsLoadFailedState("Unknown Error occured!!!"));
       }
     });
   }

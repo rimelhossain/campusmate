@@ -169,9 +169,7 @@ class Signup extends StatelessWidget {
                     if (state is SigningUpState) {
                       return FilledButton(
                         onPressed: () {},
-                        style: ButtonStyle(
-                          fixedSize: WidgetStatePropertyAll(Size(300, 40)),
-                        ),
+                        style: FilledButton.styleFrom(fixedSize: Size(300, 40)),
                         child: CircularProgressIndicator(
                           color: const Color(0xFFC0FBFF),
                           strokeWidth: 2,
@@ -189,9 +187,7 @@ class Signup extends StatelessWidget {
                           pass2Field.value.text,
                         ),
                       ),
-                      style: ButtonStyle(
-                        fixedSize: WidgetStatePropertyAll(Size(300, 40)),
-                      ),
+                      style: FilledButton.styleFrom(fixedSize: Size(300, 40)),
                       child: const Qstext(
                         "Create Account",
                         style: TextStyle(color: Color(0xFFF1FFFC)),
