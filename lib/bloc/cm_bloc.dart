@@ -108,7 +108,6 @@ class CmBloc extends Bloc<CmEvent, CmState> {
           await sbclient.auth.resend(type: event.otpType, email: event.email);
         }
       } catch (e) {
-        print(e.toString());
         return emit(OtpErrorState("An Error Occured!! ${e.toString()}"));
       }
       return emit(OtpResentState());
@@ -229,14 +228,12 @@ class CmBloc extends Bloc<CmEvent, CmState> {
           "lostOrFound": event.type,
         }).select();
         if (event.imageFile != null) {
-          final fullPath = await sbclient.storage
+          await sbclient.storage
               .from("lostAndFound")
               .upload(insertedRow.first['id'], event.imageFile!);
-          print(fullPath);
         }
         return emit(PostSuccessState());
       } catch (e) {
-        print(e);
         return emit(PostFailedState("An Error Occured!!!"));
       }
     });
@@ -275,7 +272,6 @@ class CmBloc extends Bloc<CmEvent, CmState> {
         }).toList();
         return emit(ItemLoadedState(items));
       } catch (e) {
-        print(e);
         return emit(ItemsLoadFailedState("Unknown Error occured!!!"));
       }
     });
