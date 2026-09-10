@@ -53,8 +53,8 @@ class Landing extends StatelessWidget {
                       context,
                       MaterialPageRoute(builder: (_) => Login()),
                     ),
-                    style: ButtonStyle(
-                      fixedSize: WidgetStatePropertyAll(Size(256, 64)),
+                    style: FilledButton.styleFrom(
+                      fixedSize:Size(256, 64),
                     ),
                     child: const Qstext(
                       "Get Started",

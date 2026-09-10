@@ -26,7 +26,7 @@ class AcademicsFeatureCard extends StatelessWidget {
             spacing: 16,
             children: [
               Container(
-                padding: const EdgeInsets.all(12.0),
+                padding: const EdgeInsets.all(14.0),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: const Color(0xFFFBE2CA),

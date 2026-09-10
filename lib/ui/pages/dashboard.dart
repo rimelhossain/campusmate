@@ -40,18 +40,74 @@ class Dashboard extends StatelessWidget {
                   children: [
                     const Qstext(
                       "Assalamualaikum,",
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    FilledButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (ctx) => AlertDialog(
+                            title: Qstext("Logout???"),
+                            actions: [
+                              TextButton(
+                                onPressed: () => ctx.read<CmBloc>().add(
+                                  LogoutRequestedEvent(),
+                                ),
+                                child: Qstext(
+                                  "Yes, Logout!!!",
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () => Navigator.pop(ctx),
+                                child: Qstext(
+                                  "No, stay Logged in!!!",
+                                  style: TextStyle(
+                                    color: Colors.green,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                        // Rahela Akter
+                        // ATM Hasan Mollah
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        padding: EdgeInsetsGeometry.all(8),
+                      ),
+                      child: Qstext("Logout"),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Qstext(
+                      student.name,
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0, right: 8.0),
                       child: IconButton(
                         onPressed: () {},
-                        style: ButtonStyle(
-                          backgroundColor: WidgetStatePropertyAll(Colors.white),
-                          fixedSize: WidgetStatePropertyAll(Size(44, 44)),
+                        style: IconButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          fixedSize: Size(44, 44),
                         ),
                         constraints: BoxConstraints.tight(Size(44, 44)),
-
                         tooltip: "Notifications",
                         icon: Icon(
                           Icons.notifications_outlined,
@@ -60,10 +116,6 @@ class Dashboard extends StatelessWidget {
                       ),
                     ),
                   ],
-                ),
-                Qstext(
-                  student.name,
-                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
                 ),
                 Qstext(
                   "${student.dept.toUpperCase()} | ${student.trimester}-${student.year}",
@@ -88,7 +140,7 @@ class Dashboard extends StatelessWidget {
                           Icons.shopping_bag_outlined,
                         ),
                         CampusLifeFeatureCard(
-                          "Lost And Found",
+                          "Lost & Found",
                           Icons.search,
                           onTap: () => Navigator.push(
                             context,
@@ -99,7 +151,7 @@ class Dashboard extends StatelessWidget {
                         ),
                         CampusLifeFeatureCard(
                           "Fresher's Corner",
-                          Icons.home_outlined
+                          Icons.home_outlined,
                         ),
                       ],
                     ),

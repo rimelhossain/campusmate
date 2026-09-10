@@ -16,7 +16,7 @@ class CampusLifeFeatureCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card.outlined(
       elevation: 1,
-      color: Color(0xFFFFFEFE),
+      color: Colors.white,
       shape: RoundedRectangleBorder(
         side: BorderSide(color: const Color(0xFFC3DDBC)),
         borderRadius: BorderRadiusGeometry.circular(20),
@@ -32,7 +32,7 @@ class CampusLifeFeatureCard extends StatelessWidget {
             spacing: 16,
             children: [
               Container(
-                padding: const EdgeInsets.all(12.0),
+                padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: const Color(0xFFEFF6DA),

@@ -100,9 +100,7 @@ class _ChoosePassState extends State<ChoosePass> {
                     pass2Field.value.text.trim(),
                   ),
                 ),
-                style: ButtonStyle(
-                  fixedSize: WidgetStatePropertyAll(Size(156, 40)),
-                ),
+                style: FilledButton.styleFrom(fixedSize: Size(156, 40)),
                 child: const Qstext("Proceed"),
               ),
             ],

@@ -102,3 +102,15 @@ final class PostFailedState extends CmState {
   final String msg;
   const PostFailedState(this.msg);
 }
+
+final class ItemLoadedState extends CmState {
+  final List<LostAndFoundItem> items;
+  const ItemLoadedState(this.items);
+}
+
+final class ItemsLoadFailedState extends CmState {
+  final String msg;
+  const ItemsLoadFailedState(this.msg);
+}
+
+final class ItemsLoadingState extends CmState {}

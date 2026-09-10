@@ -87,9 +87,7 @@ class _PassResetOtpState extends State<PassResetOtp> {
                     OtpType.recovery,
                   ),
                 ),
-                style: ButtonStyle(
-                  fixedSize: const WidgetStatePropertyAll(Size(128, 32)),
-                ),
+                style: FilledButton.styleFrom(fixedSize: Size(128, 32)),
                 child: const Qstext("Proceed"),
               ),
               const SizedBox(height: 48),

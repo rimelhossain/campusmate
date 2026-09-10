@@ -151,9 +151,7 @@ class Login extends StatelessWidget {
                     if (state is LoggingInState) {
                       return FilledButton(
                         onPressed: () {},
-                        style: ButtonStyle(
-                          fixedSize: WidgetStatePropertyAll(Size(300, 40)),
-                        ),
+                        style: FilledButton.styleFrom(fixedSize: Size(300, 40)),
                         child: CircularProgressIndicator(
                           color: Colors.white,
                           constraints: BoxConstraints.tight(Size(20, 20)),
@@ -168,8 +166,8 @@ class Login extends StatelessWidget {
                           passField.value.text.trim(),
                         ),
                       ),
-                      style: ButtonStyle(
-                        fixedSize: WidgetStatePropertyAll(Size(300, 40)),
+                      style: FilledButton.styleFrom(
+                        fixedSize: Size(300, 40),
                       ),
                       child: const Qstext(
                         "Login",

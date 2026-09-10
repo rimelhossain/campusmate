@@ -96,19 +96,17 @@ class HeroCard extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    style: ButtonStyle(
-                      padding: WidgetStatePropertyAll(
-                        const EdgeInsetsDirectional.symmetric(
-                          horizontal: 26,
-                          vertical: 20,
-                        ),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsetsDirectional.symmetric(
+                        horizontal: 26,
+                        vertical: 20,
                       ),
-                      shape: WidgetStatePropertyAll(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadiusGeometry.circular(12),
-                        ),
+
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadiusGeometry.circular(12),
                       ),
-                      backgroundColor: WidgetStatePropertyAll(Colors.white),
+
+                      backgroundColor: Colors.white,
                     ),
                   ),
                 ],

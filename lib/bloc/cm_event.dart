@@ -92,3 +92,6 @@ final class AddPostEvent extends CmEvent {
     this.time,
   );
 }
+
+
+final class LoadItemsEvent extends CmEvent {}
