@@ -1,6 +1,7 @@
 import 'package:campusmate/bloc/cm_bloc.dart';
 import 'package:campusmate/model/lost_and_found_item.dart';
 import 'package:campusmate/ui/components/qstext.dart';
+import 'package:campusmate/ui/components/response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,6 +14,8 @@ class LostAndFoundDetails extends StatefulWidget {
 }
 
 class _LostAndFoundDetailsState extends State<LostAndFoundDetails> {
+  final responseController = TextEditingController();
+
   double? calculateImageHeight() {
     double? calculatedHeight;
     widget.item.imageProvider
@@ -33,18 +36,67 @@ class _LostAndFoundDetailsState extends State<LostAndFoundDetails> {
     return Scaffold(
       persistentFooterButtons: [
         TextFormField(
+          enabled: !widget.item.isResolved,
+          controller: responseController,
           decoration: InputDecoration(
             contentPadding: EdgeInsetsGeometry.all(8),
             hint: Qstext("Respond"),
             suffixIcon: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                if (responseController.value.text.isNotEmpty &&
+                    !widget.item.isResolved) {
+                  context.read<CmBloc>().add(
+                    AddResponseEvent(
+                      responseController.value.text.trim(),
+                      widget.item.id,
+                    ),
+                  );
+                  responseController.text = "";
+                }
+              },
               icon: Icon(Icons.send, color: Colors.deepOrange),
             ),
           ),
         ),
       ],
-      body: BlocBuilder<CmBloc, CmState>(
+      body: BlocConsumer<CmBloc, CmState>(
+        listener: (context, state) {
+          if (state is AddResponseErrorState) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Qstext(state.msg)));
+          } else if (state is AddResponseSuccessState) {
+            context.read<CmBloc>().add(LoadResponsesEvent(widget.item.id));
+          } else if (state is LoadResponsesErrorState) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Qstext(state.msg)));
+          } else if (state is ResolveErrorState) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Qstext(state.msg)));
+          }
+        },
         builder: (context, state) {
+          Widget responses = LinearProgressIndicator();
+          if (state is LoadResponsesSuccessState) {
+            responses = SingleChildScrollView(
+              child: Column(
+                children: state.responses
+                    .map(
+                      (e) => Response(
+                        e['username'] ?? "Unknown",
+                        e['description'] ?? "No Description",
+                      ),
+                    )
+                    .toList(),
+              ),
+            );
+          } else if (state is LoadResponsesErrorState) {
+            responses = Qstext("failed to load responses");
+          } else {
+            context.read<CmBloc>().add(LoadResponsesEvent(widget.item.id));
+          }
           return CustomScrollView(
             slivers: [
               SliverAppBar(
@@ -77,21 +129,14 @@ class _LostAndFoundDetailsState extends State<LostAndFoundDetails> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          height: 28,
-                          width: 96,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF534227),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Center(
-                            child: Qstext(
-                              widget.item.type.toUpperCase(),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                        FilledButton(
+                          onPressed: widget.item.isResolved
+                              ? null
+                              : () => context.read<CmBloc>().add(
+                                  ResolvedRequestedEvent(widget.item),
+                                ),
+                          child: Qstext(
+                            "${widget.item.type.toUpperCase()} ${widget.item.isResolved ? '(Resolved)' : '(Unresolved - click here to mark it as resolved)'}",
                           ),
                         ),
                         SizedBox(height: 16),
@@ -140,8 +185,15 @@ class _LostAndFoundDetailsState extends State<LostAndFoundDetails> {
                           ),
                         ),
                         SizedBox(height: 16),
-                        Qstext("Responses", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
-                        
+                        Qstext(
+                          "Responses",
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        responses,
                       ],
                     ),
                   ),

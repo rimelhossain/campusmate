@@ -105,8 +105,7 @@ class _PassResetOtpState extends State<PassResetOtp> {
                 buildWhen: (previous, current) =>
                     current is OtpTimerEndedState ||
                     current is OtpResendingState ||
-                    current is OtpResentState ||
-                    current is OtpErrorState,
+                    current is OtpResentState,
                 builder: (context, state) {
                   if (state is OtpTimerEndedState) {
                     return ElevatedButton(

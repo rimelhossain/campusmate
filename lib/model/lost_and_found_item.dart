@@ -5,14 +5,14 @@ class LostAndFoundItem {
   final DateTime createdAt;
   final String title;
   final String description;
-  final bool isResolved;
   final String authorId;
   final String type;
   final String location;
   final TimeOfDay time;
   final ImageProvider imageProvider;
+  bool isResolved;
 
-  const LostAndFoundItem({
+  LostAndFoundItem({
     required this.id,
     required this.createdAt,
     required this.title,

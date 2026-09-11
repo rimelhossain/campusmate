@@ -85,6 +85,12 @@ class CmBloc extends Bloc<CmEvent, CmState> {
             "id": sbclient.auth.currentSession?.user.id,
             "email": event.email,
           });
+          await sbclient.from("users").insert({
+            "id": sbclient.auth.currentUser!.id,
+            "created_at": sbclient.auth.currentUser!.createdAt,
+            "name": sbclient.auth.currentUser!.userMetadata!["name"],
+            "student_id": sbclient.auth.currentUser!.userMetadata!["sid"],
+          });
 
           student = Student(sbclient.auth.currentUser!.userMetadata!);
 
@@ -270,6 +276,50 @@ class CmBloc extends Bloc<CmEvent, CmState> {
         return emit(ItemLoadedState(items));
       } catch (e) {
         return emit(ItemsLoadFailedState("Unknown Error occured!!!"));
+      }
+    });
+
+    on<AddResponseEvent>((event, emit) async {
+      try {
+        await sbclient.from("comments").insert({
+          "desc": event.desc,
+          "author": sbclient.auth.currentUser!.id,
+          "post": event.postId,
+        });
+        emit(AddResponseSuccessState());
+      } catch (e) {
+        print(e);
+        emit(AddResponseErrorState("Error!!!!"));
+      }
+    });
+
+    on<LoadResponsesEvent>((event, emit) async {
+      try {
+        final resp = await sbclient
+            .from("responses")
+            .select("*")
+            .eq("pid", event.postId);
+        emit(LoadResponsesSuccessState(resp));
+      } catch (e) {
+        emit(LoadResponsesErrorState("Something went wrong"));
+      }
+    });
+
+    on<ResolvedRequestedEvent>((event, emit) async {
+      if (event.post.authorId.compareTo(sbclient.auth.currentUser!.id) != 0) {
+        return emit(ResolveErrorState("An Error occured!!"));
+      }
+      try {
+        await sbclient
+            .from('posts')
+            .update({'isResolved': true})
+            .eq('id', event.post.id);
+
+        event.post.isResolved = true;
+
+        return emit(ResolveSuccessState());
+      } catch (e) {
+        return emit(ResolveErrorState("Unknown Error!!"));
       }
     });
   }

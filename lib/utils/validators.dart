@@ -79,13 +79,10 @@ String? finalCheck(
   // Name and email match
   final emailPrefix = email.split(RegExp(r"[0-9]{6,7}@")).first;
 
-  final emailPrefixFromName = (name.substring(0, 1) + name.split(" ").last)
-      .toLowerCase();
-
-  if (emailPrefixFromName.compareTo(emailPrefix) != 0) {
-    return "Please use the name from your Student ID card";
+  if (name.substring(0, 1).toLowerCase() != emailPrefix.substring(0, 1) ||
+      !name.toLowerCase().contains(emailPrefix.substring(1))) {
+    return "Please use the name from your student id card.";
   }
-
   // id and email match
   final idFromEmail = RegExp(r"[0-9]{6,7}").stringMatch(email);
 

@@ -114,3 +114,28 @@ final class ItemsLoadFailedState extends CmState {
 }
 
 final class ItemsLoadingState extends CmState {}
+
+final class AddResponseErrorState extends CmState {
+  final String msg;
+  const AddResponseErrorState(this.msg);
+}
+
+final class AddResponseSuccessState extends CmState {}
+
+final class LoadResponsesErrorState extends CmState {
+  final String msg;
+  const LoadResponsesErrorState(this.msg);
+}
+
+final class LoadResponsesSuccessState extends CmState {
+  final List<Map<String, dynamic>> responses;
+  const LoadResponsesSuccessState(this.responses);
+}
+
+final class ResolveErrorState extends CmState {
+  final String msg;
+  const ResolveErrorState(this.msg);
+}
+
+
+final class ResolveSuccessState extends CmState {}

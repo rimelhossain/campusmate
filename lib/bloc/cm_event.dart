@@ -93,5 +93,20 @@ final class AddPostEvent extends CmEvent {
   );
 }
 
-
 final class LoadItemsEvent extends CmEvent {}
+
+final class AddResponseEvent extends CmEvent {
+  final String desc;
+  final String postId;
+  const AddResponseEvent(this.desc, this.postId);
+}
+
+final class LoadResponsesEvent extends CmEvent {
+  final String postId;
+  const LoadResponsesEvent(this.postId);
+}
+
+final class ResolvedRequestedEvent extends CmEvent {
+  final LostAndFoundItem post;
+  const ResolvedRequestedEvent(this.post);
+}
