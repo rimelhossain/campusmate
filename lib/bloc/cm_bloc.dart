@@ -260,13 +260,10 @@ class CmBloc extends Bloc<CmEvent, CmState> {
               hour: int.parse(timeString.first),
               minute: int.parse(timeString[1]),
             ),
-            image: Image.network(
+            imageProvider: NetworkImage(
               sbclient.storage
                   .from("lostAndFound")
                   .getPublicUrl(itemData["id"]),
-              cacheWidth: 128,
-              width: 128,
-              fit: BoxFit.fitWidth,
             ),
           );
         }).toList();

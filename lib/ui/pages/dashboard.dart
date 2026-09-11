@@ -6,6 +6,7 @@ import 'package:campusmate/ui/components/hero_card.dart';
 import 'package:campusmate/ui/pages/landing.dart';
 import 'package:campusmate/ui/pages/lost_feed.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Dashboard extends StatelessWidget {
@@ -24,165 +25,196 @@ class Dashboard extends StatelessWidget {
           );
         }
       },
-      child: Scaffold(
-        backgroundColor: Color(0xFFE9ECEA),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
-            child: Flex(
-              direction: Axis.vertical,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(width: double.infinity),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Qstext(
-                      "Assalamualaikum,",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500,
+      child: PopScope(
+        onPopInvokedWithResult: (didPop, result) => showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: Qstext("Exit???"),
+            actions: [
+              TextButton(
+                onPressed: SystemNavigator.pop,
+                child: Qstext(
+                  "Yes, Exit now!",
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(ctx),
+                child: Qstext(
+                  "No, Stay here.",
+                  style: TextStyle(color: Colors.green),
+                ),
+              ),
+            ],
+          ),
+        ),
+        child: Scaffold(
+          backgroundColor: Color(0xFFE9ECEA),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
+              child: Flex(
+                direction: Axis.vertical,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const SizedBox(width: double.infinity),
+                  Flex(
+                    direction: Axis.horizontal,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Qstext(
+                              "Assalamualaikum,",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            Qstext(
+                              student.name,
+                              style: TextStyle(
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Qstext(
+                              "${student.dept.toUpperCase()} | ${student.trimester}-${student.year}",
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    FilledButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (ctx) => AlertDialog(
-                            title: Qstext("Logout???"),
-                            actions: [
-                              TextButton(
-                                onPressed: () => ctx.read<CmBloc>().add(
-                                  LogoutRequestedEvent(),
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        spacing: 16,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          FilledButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (ctx) => AlertDialog(
+                                  title: Qstext("Logout???"),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => ctx.read<CmBloc>().add(
+                                        LogoutRequestedEvent(),
+                                      ),
+                                      child: Qstext(
+                                        "Yes, Logout!!!",
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(ctx),
+                                      child: Qstext(
+                                        "No, stay Logged in!!!",
+                                        style: TextStyle(
+                                          color: Colors.green,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                child: Qstext(
-                                  "Yes, Logout!!!",
-                                  style: TextStyle(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              TextButton(
-                                onPressed: () => Navigator.pop(ctx),
-                                child: Qstext(
-                                  "No, stay Logged in!!!",
-                                  style: TextStyle(
-                                    color: Colors.green,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
+                              );
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor: Colors.red,
+                              padding: EdgeInsetsGeometry.all(8),
+                            ),
+                            child: Qstext("Logout"),
                           ),
-                        );
-                        // Rahela Akter
-                        // ATM Hasan Mollah
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: Colors.red,
-                        padding: EdgeInsetsGeometry.all(8),
-                      ),
-                      child: Qstext("Logout"),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Qstext(
-                      student.name,
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0, right: 8.0),
-                      child: IconButton(
-                        onPressed: () {},
-                        style: IconButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          fixedSize: Size(44, 44),
-                        ),
-                        constraints: BoxConstraints.tight(Size(44, 44)),
-                        tooltip: "Notifications",
-                        icon: Icon(
-                          Icons.notifications_outlined,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Qstext(
-                  "${student.dept.toUpperCase()} | ${student.trimester}-${student.year}",
-                  style: TextStyle(fontSize: 20),
-                ),
-                SizedBox(height: 24),
-                HeroCard(),
-                SizedBox(height: 32),
-                Qstext(
-                  "Campus Life",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 16),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: IntrinsicHeight(
-                    child: Row(
-                      spacing: 16,
-                      children: [
-                        CampusLifeFeatureCard(
-                          "Marketplace",
-                          Icons.shopping_bag_outlined,
-                        ),
-                        CampusLifeFeatureCard(
-                          "Lost & Found",
-                          Icons.search,
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: ((context) => LostFeed()),
+                          IconButton(
+                            onPressed: () {},
+                            style: IconButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              fixedSize: Size(44, 44),
+                            ),
+                            constraints: BoxConstraints.tight(Size(44, 44)),
+                            tooltip: "Notifications",
+                            icon: Icon(
+                              Icons.notifications_outlined,
+                              color: Colors.black,
                             ),
                           ),
-                        ),
-                        CampusLifeFeatureCard(
-                          "Fresher's Corner",
-                          Icons.home_outlined,
-                        ),
-                      ],
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 24),
+                  HeroCard(),
+                  SizedBox(height: 32),
+                  Qstext(
+                    "Campus Life",
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 16),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: IntrinsicHeight(
+                      child: Row(
+                        spacing: 16,
+                        children: [
+                          CampusLifeFeatureCard(
+                            "Marketplace",
+                            Icons.shopping_bag_outlined,
+                          ),
+                          CampusLifeFeatureCard(
+                            "Lost & Found",
+                            Icons.search,
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: ((context) => LostFeed()),
+                              ),
+                            ),
+                          ),
+                          CampusLifeFeatureCard(
+                            "Fresher's Corner",
+                            Icons.home_outlined,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: 32),
-                Qstext(
-                  "Academics",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 16),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: IntrinsicHeight(
-                    child: Row(
-                      spacing: 16,
-                      children: [
-                        AcademicsFeatureCard("Study Help", Icons.book_outlined),
-                        AcademicsFeatureCard(
-                          "AI Quiz",
-                          Icons.thunderstorm_outlined,
-                        ),
-                        AcademicsFeatureCard(
-                          "CGPA Calculator",
-                          Icons.calculate_outlined,
-                        ),
-                      ],
+                  SizedBox(height: 32),
+                  Qstext(
+                    "Academics",
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 16),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: IntrinsicHeight(
+                      child: Row(
+                        spacing: 16,
+                        children: [
+                          AcademicsFeatureCard(
+                            "Study Help",
+                            Icons.book_outlined,
+                          ),
+                          AcademicsFeatureCard(
+                            "AI Quiz",
+                            Icons.thunderstorm_outlined,
+                          ),
+                          AcademicsFeatureCard(
+                            "CGPA Calculator",
+                            Icons.calculate_outlined,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

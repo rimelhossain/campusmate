@@ -10,7 +10,7 @@ class LostAndFoundItem {
   final String type;
   final String location;
   final TimeOfDay time;
-  final Image image;
+  final ImageProvider imageProvider;
 
   const LostAndFoundItem({
     required this.id,
@@ -22,6 +22,6 @@ class LostAndFoundItem {
     required this.type,
     required this.location,
     required this.time,
-    required this.image
+    required this.imageProvider
   });
 }

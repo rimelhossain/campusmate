@@ -1,5 +1,6 @@
 import 'package:campusmate/model/lost_and_found_item.dart';
 import 'package:campusmate/ui/components/qstext.dart';
+import 'package:campusmate/ui/pages/lost_and_found_details.dart';
 import 'package:flutter/material.dart';
 
 class LostAndFoundCard extends StatelessWidget {
@@ -80,10 +81,31 @@ class LostAndFoundCard extends StatelessWidget {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadiusGeometry.circular(16),
-                      child: item.image,
+                      child: Hero(
+                        tag: item.id,
+                        child: Image(
+                          image: item.imageProvider,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) {
+                              return child;
+                            }
+                            return LinearProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes == null
+                                  ? null
+                                  : loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!,
+                            );
+                          },
+                        ),
+                      ),
                     ),
                     FilledButton(
-                      onPressed: () {},
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => LostAndFoundDetails(item),
+                        ),
+                      ),
                       style: FilledButton.styleFrom(
                         backgroundColor: Color(0xFF00994C),
                       ),
