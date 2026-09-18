@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:campusmate/model/lost_and_found_item.dart';
 import 'package:campusmate/model/student.dart';
 import 'package:campusmate/utils/validators.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -50,10 +51,19 @@ class CmBloc extends Bloc<CmEvent, CmState> {
           data: {"sid": event.id, "name": event.name},
         );
       } on AuthWeakPasswordException catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
         return emit(SignUpErrorState(e.message));
       } on AuthApiException catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
         return emit(SignUpErrorState(e.message));
       } catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
         return emit(
           SignUpErrorState("An Unknown error Occurred. [${e.toString()}]"),
         );
@@ -97,8 +107,14 @@ class CmBloc extends Bloc<CmEvent, CmState> {
           return emit(SignUpSuccessState());
         }
       } on AuthApiException catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
         return emit(OtpErrorState(e.message));
       } catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
         return emit(OtpErrorState(e.toString()));
       }
     });
@@ -114,6 +130,9 @@ class CmBloc extends Bloc<CmEvent, CmState> {
           await sbclient.auth.resend(type: event.otpType, email: event.email);
         }
       } catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
         return emit(OtpErrorState("An Error Occured!! ${e.toString()}"));
       }
       return emit(OtpResentState());
@@ -135,10 +154,19 @@ class CmBloc extends Bloc<CmEvent, CmState> {
           password: event.pass,
         );
       } on AuthApiException catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
         return emit(LoginErrorState(e.message));
       } on AuthException catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
         return emit(LoginErrorState(e.message));
       } catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
         return emit(LoginErrorState(e.toString()));
       }
 
@@ -188,6 +216,9 @@ class CmBloc extends Bloc<CmEvent, CmState> {
         await sbclient.auth.updateUser(UserAttributes(password: event.pass1));
         await sbclient.auth.signOut(scope: SignOutScope.global);
       } on AuthApiException catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
         return emit(SetPassErrorState(e.message));
       }
       return emit(SetPassSuccessState());
@@ -240,6 +271,9 @@ class CmBloc extends Bloc<CmEvent, CmState> {
         }
         return emit(PostSuccessState());
       } catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
         return emit(PostFailedState("An Error Occured!!!"));
       }
     });
@@ -275,6 +309,9 @@ class CmBloc extends Bloc<CmEvent, CmState> {
         }).toList();
         return emit(ItemLoadedState(items));
       } catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
         return emit(ItemsLoadFailedState("Unknown Error occured!!!"));
       }
     });
@@ -288,7 +325,9 @@ class CmBloc extends Bloc<CmEvent, CmState> {
         });
         emit(AddResponseSuccessState());
       } catch (e) {
-        print(e);
+        if (kDebugMode) {
+          print(e);
+        }
         emit(AddResponseErrorState("Error!!!!"));
       }
     });
@@ -301,6 +340,9 @@ class CmBloc extends Bloc<CmEvent, CmState> {
             .eq("pid", event.postId);
         emit(LoadResponsesSuccessState(resp));
       } catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
         emit(LoadResponsesErrorState("Something went wrong"));
       }
     });
@@ -310,15 +352,12 @@ class CmBloc extends Bloc<CmEvent, CmState> {
         return emit(ResolveErrorState("An Error occured!!"));
       }
       try {
-        await sbclient
-            .from('posts')
-            .update({'isResolved': true})
-            .eq('id', event.post.id);
-
-        event.post.isResolved = true;
-
+        await event.post.resolve();
         return emit(ResolveSuccessState());
       } catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
         return emit(ResolveErrorState("Unknown Error!!"));
       }
     });
