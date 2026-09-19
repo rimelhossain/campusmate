@@ -5,6 +5,8 @@ import 'package:campusmate/ui/components/campus_life_feature_card.dart';
 import 'package:campusmate/ui/components/hero_card.dart';
 import 'package:campusmate/ui/pages/landing.dart';
 import 'package:campusmate/ui/pages/lost_feed.dart';
+import 'package:campusmate/utils/constants.dart';
+import 'package:campusmate/utils/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,6 +28,7 @@ class Dashboard extends StatelessWidget {
         }
       },
       child: PopScope(
+        canPop: false,
         onPopInvokedWithResult: (didPop, result) => showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
@@ -59,90 +62,52 @@ class Dashboard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const SizedBox(width: double.infinity),
-                  Flex(
-                    direction: Axis.horizontal,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Qstext(
-                              "Assalamualaikum,",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            Qstext(
-                              student.name,
-                              style: TextStyle(
-                                fontSize: 32,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Qstext(
-                              "${student.dept.toUpperCase()} | ${student.trimester}-${student.year}",
-                              style: TextStyle(fontSize: 20),
-                            ),
-                          ],
-                        ),
-                      ),
                       Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
-                        spacing: 16,
-                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          FilledButton(
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (ctx) => AlertDialog(
-                                  title: Qstext("Logout???"),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () => ctx.read<CmBloc>().add(
-                                        LogoutRequestedEvent(),
-                                      ),
-                                      child: Qstext(
-                                        "Yes, Logout!!!",
-                                        style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    TextButton(
-                                      onPressed: () => Navigator.pop(ctx),
-                                      child: Qstext(
-                                        "No, stay Logged in!!!",
-                                        style: TextStyle(
-                                          color: Colors.green,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                            style: TextButton.styleFrom(
-                              backgroundColor: Colors.red,
-                              padding: EdgeInsetsGeometry.all(8),
+                          const Qstext(
+                            "Assalamualaikum,",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
                             ),
-                            child: Qstext("Logout"),
                           ),
-                          IconButton(
+                          Qstext(
+                            capitalizePerWords(student.name),
+                            style: TextStyle(
+                              fontSize: 32,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Qstext(
+                            "${student.dept.toUpperCase()} | ${student.trimester}-${student.year}",
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        spacing: 16,
+                        children: [
+                          IconButton.filled(
                             onPressed: () {},
+                            tooltip: "Notifications",
+                            color: textColor,
                             style: IconButton.styleFrom(
                               backgroundColor: Colors.white,
-                              fixedSize: Size(44, 44),
                             ),
-                            constraints: BoxConstraints.tight(Size(44, 44)),
-                            tooltip: "Notifications",
-                            icon: Icon(
-                              Icons.notifications_outlined,
-                              color: Colors.black,
+                            icon: Icon(Icons.notifications),
+                          ),
+                          Tooltip(
+                            message: "Profile Details",
+                            child: ClipRRect(
+                              borderRadius: BorderRadiusGeometry.circular(12),
+                              child: CircleAvatar(child: student.image),
                             ),
                           ),
                         ],

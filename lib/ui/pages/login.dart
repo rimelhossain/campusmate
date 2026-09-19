@@ -102,6 +102,12 @@ class Login extends StatelessWidget {
                     return TextFormField(
                       controller: passField,
                       obscureText: !showPass,
+                      onFieldSubmitted: (value) => context.read<CmBloc>().add(
+                        LoginRequestedEvent(
+                          emailField.value.text.trim(),
+                          value.trim(),
+                        ),
+                      ),
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
                           onPressed: () =>
