@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LostAndFoundItem {
   final String id;
@@ -31,12 +30,4 @@ class LostAndFoundItem {
     required this.time,
     required this.imageProvider,
   });
-
-
-
-  Future<void> resolve() async {
-    final sbclient = Supabase.instance.client;
-    await sbclient.from("postsdata").update({"isResolved": true}).eq("id", id);
-    isResolved = true;
-  }
 }
