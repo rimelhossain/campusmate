@@ -116,30 +116,44 @@ class LostAndFoundCard extends StatelessWidget {
                     ),
                     child: Hero(
                       tag: item.id,
-                      child: Image(
-                        image: item.imageProvider,
-                        errorBuilder: (context, error, stackTrace) => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Qstext(
-                            "Image Could not be loaded or no Image provided",
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
+                      child: item.imageProvider == null
+                          ? Qstext(
+                              "No Image",
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          : Image(
+                              image: item.imageProvider!,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Qstext(
+                                      "Image Could not be loaded",
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                              loadingBuilder:
+                                  (context, child, loadingProgress) {
+                                    if (loadingProgress == null) {
+                                      return child;
+                                    }
+                                    return LinearProgressIndicator(
+                                      value:
+                                          loadingProgress.expectedTotalBytes ==
+                                              null
+                                          ? null
+                                          : loadingProgress
+                                                    .cumulativeBytesLoaded /
+                                                loadingProgress
+                                                    .expectedTotalBytes!,
+                                    );
+                                  },
                             ),
-                          ),
-                        ),
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) {
-                            return child;
-                          }
-                          return LinearProgressIndicator(
-                            value: loadingProgress.expectedTotalBytes == null
-                                ? null
-                                : loadingProgress.cumulativeBytesLoaded /
-                                      loadingProgress.expectedTotalBytes!,
-                          );
-                        },
-                      ),
                     ),
                   ),
                 ),

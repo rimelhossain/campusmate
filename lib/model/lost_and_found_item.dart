@@ -13,7 +13,7 @@ class LostAndFoundItem {
   final String type;
   final String location;
   final TimeOfDay time;
-  final ImageProvider imageProvider;
+  final ImageProvider? imageProvider;
   bool isResolved;
 
   LostAndFoundItem({

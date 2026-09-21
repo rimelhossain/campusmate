@@ -51,19 +51,30 @@ class _LostAndFoundDetailsState extends State<LostAndFoundDetails> {
                       borderRadius: BorderRadiusGeometry.circular(10),
                       child: Hero(
                         tag: widget.item.id,
-                        child: Image(
-                          image: widget.item.imageProvider,
-                          errorBuilder: (context, error, stackTrace) => Center(
-                            child: Qstext(
-                              "No Image",
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
+                        child: widget.item.imageProvider == null
+                            ? Center(
+                              child: Qstext(
+                                  "No Image",
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                            )
+                            : Image(
+                                image: widget.item.imageProvider!,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    Center(
+                                      child: Qstext(
+                                        "Could Not Load Image",
+                                        style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                fit: BoxFit.fitWidth,
                               ),
-                            ),
-                          ),
-                          fit: BoxFit.fitWidth,
-                        ),
                       ),
                     ),
                   ),

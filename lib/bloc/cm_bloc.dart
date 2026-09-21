@@ -264,6 +264,7 @@ class CmBloc extends Bloc<CmEvent, CmState> {
           "location": event.location,
           "author": sbclient.auth.currentUser!.id,
           "lostOrFound": event.type,
+          "hasphoto": event.imageFile != null,
         }).select();
         if (event.imageFile != null) {
           await sbclient.storage
@@ -304,11 +305,13 @@ class CmBloc extends Bloc<CmEvent, CmState> {
               hour: int.parse(timeString.first),
               minute: int.parse(timeString[1]),
             ),
-            imageProvider: NetworkImage(
-              sbclient.storage
-                  .from("lostAndFound")
-                  .getPublicUrl(itemData["id"]),
-            ),
+            imageProvider: itemData['hasphoto']
+                ? NetworkImage(
+                    sbclient.storage
+                        .from("lostAndFound")
+                        .getPublicUrl(itemData["id"]),
+                  )
+                : null,
           );
         }).toList();
         return emit(ItemLoadedState(items));
