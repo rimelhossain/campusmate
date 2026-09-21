@@ -31,6 +31,8 @@ class _CreatePostState extends State<CreatePost> {
       appBar: AppBar(title: const Qstext("Create Lost or Found Entry")),
       body: SafeArea(
         child: BlocConsumer<CmBloc, CmState>(
+          listenWhen: (previous, current) =>
+              current is PostFailedState || current is PostSuccessState,
           listener: (context, state) {
             if (state is PostFailedState) {
               FocusManager.instance.primaryFocus?.unfocus();
@@ -43,6 +45,10 @@ class _CreatePostState extends State<CreatePost> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Qstext("Post Added Successfully"),
+                  onVisible: () => Future.delayed(
+                    Duration(seconds: 4),
+                    ScaffoldMessenger.of(context).clearSnackBars,
+                  ),
                   action: SnackBarAction(
                     label: "OK",
                     onPressed: ScaffoldMessenger.of(context).clearSnackBars,

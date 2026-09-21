@@ -120,7 +120,10 @@ final class AddResponseErrorState extends CmState {
   const AddResponseErrorState(this.msg);
 }
 
-final class AddResponseSuccessState extends CmState {}
+final class AddResponseSuccessState extends CmState {
+  final Map<String, dynamic> response;
+  const AddResponseSuccessState(this.response);
+}
 
 final class LoadResponsesErrorState extends CmState {
   final String msg;
@@ -137,5 +140,6 @@ final class ResolveErrorState extends CmState {
   const ResolveErrorState(this.msg);
 }
 
-
 final class ResolveSuccessState extends CmState {}
+
+final class LoadingResponsesState extends CmState {}

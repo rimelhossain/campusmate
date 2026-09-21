@@ -5,8 +5,8 @@ import 'package:campusmate/ui/components/campus_life_feature_card.dart';
 import 'package:campusmate/ui/components/hero_card.dart';
 import 'package:campusmate/ui/pages/landing.dart';
 import 'package:campusmate/ui/pages/lost_feed.dart';
+import 'package:campusmate/ui/pages/profile_details.dart';
 import 'package:campusmate/utils/constants.dart';
-import 'package:campusmate/utils/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -77,7 +77,7 @@ class Dashboard extends StatelessWidget {
                             ),
                           ),
                           Qstext(
-                            capitalizePerWords(student.name),
+                            student.name,
                             style: TextStyle(
                               fontSize: 32,
                               fontWeight: FontWeight.bold,
@@ -107,7 +107,15 @@ class Dashboard extends StatelessWidget {
                             message: "Profile Details",
                             child: ClipRRect(
                               borderRadius: BorderRadiusGeometry.circular(12),
-                              child: CircleAvatar(child: student.image),
+                              child: InkWell(
+                                onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => ProfileDetails(),
+                                  ),
+                                ),
+                                child: CircleAvatar(child: student.image),
+                              ),
                             ),
                           ),
                         ],
@@ -138,7 +146,7 @@ class Dashboard extends StatelessWidget {
                             onTap: () => Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: ((context) => LostFeed()),
+                                builder: (context) => LostFeed(),
                               ),
                             ),
                           ),

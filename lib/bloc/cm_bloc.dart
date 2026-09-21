@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'cm_event.dart';
@@ -15,9 +16,8 @@ part 'cm_state.dart';
 late Student student;
 
 class CmBloc extends Bloc<CmEvent, CmState> {
+  final sbclient = Supabase.instance.client;
   CmBloc() : super(CmInitial()) {
-    final sbclient = Supabase.instance.client;
-
     on<PassToggleEvent>((event, emit) => emit(PassToggleState()));
 
     on<SignUpPressedEvent>((event, emit) async {
@@ -175,7 +175,8 @@ class CmBloc extends Bloc<CmEvent, CmState> {
       }
 
       student = Student(sbclient.auth.currentUser!.userMetadata!);
-
+      final pref = await SharedPreferences.getInstance();
+      await pref.setString("userEmail", student.email);
       return emit(LoginSuccessState());
     });
 
@@ -257,7 +258,7 @@ class CmBloc extends Bloc<CmEvent, CmState> {
       }
       emit(PostingState());
       try {
-        final insertedRow = await sbclient.from("posts").insert({
+        final insertedRow = await sbclient.from("postsdata").insert({
           "title": event.title,
           "desc": event.description,
           "location": event.location,
@@ -294,6 +295,9 @@ class CmBloc extends Bloc<CmEvent, CmState> {
             description: itemData["desc"],
             isResolved: itemData["isResolved"],
             authorId: itemData["author"],
+            username: itemData["username"],
+            userSid: itemData["sid"],
+            userPhotoUrl: itemData["userphoto"] ?? "",
             type: itemData["lostOrFound"],
             location: itemData["location"],
             time: TimeOfDay(
@@ -322,8 +326,14 @@ class CmBloc extends Bloc<CmEvent, CmState> {
           "desc": event.desc,
           "author": sbclient.auth.currentUser!.id,
           "post": event.postId,
-        });
-        emit(AddResponseSuccessState());
+        }).select();
+        emit(
+          AddResponseSuccessState({
+            "username": student.name,
+            "sid": student.id,
+            "description": event.desc,
+          }),
+        );
       } catch (e) {
         if (kDebugMode) {
           print(e);
@@ -348,9 +358,6 @@ class CmBloc extends Bloc<CmEvent, CmState> {
     });
 
     on<ResolvedRequestedEvent>((event, emit) async {
-      if (event.post.authorId.compareTo(sbclient.auth.currentUser!.id) != 0) {
-        return emit(ResolveErrorState("An Error occured!!"));
-      }
       try {
         await event.post.resolve();
         return emit(ResolveSuccessState());

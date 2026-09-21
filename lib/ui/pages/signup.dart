@@ -160,6 +160,15 @@ class Signup extends StatelessWidget {
                     pass1Field.value.text,
                     value != null ? value.trim() : "",
                   ),
+                  onFieldSubmitted: (value) => context.read<CmBloc>().add(
+                    SignUpPressedEvent(
+                      nameField.value.text,
+                      emailField.value.text,
+                      idField.value.text,
+                      pass1Field.value.text,
+                      value,
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 16),
                 BlocBuilder<CmBloc, CmState>(

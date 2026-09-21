@@ -1,6 +1,7 @@
 import 'package:campusmate/model/lost_and_found_item.dart';
 import 'package:campusmate/ui/components/qstext.dart';
 import 'package:campusmate/ui/pages/lost_and_found_details.dart';
+import 'package:campusmate/utils/helpers.dart';
 import 'package:flutter/material.dart';
 
 class LostAndFoundCard extends StatelessWidget {
@@ -9,6 +10,7 @@ class LostAndFoundCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textColor = item.type == "lost" ? Colors.white : null;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Card.filled(
@@ -16,30 +18,33 @@ class LostAndFoundCard extends StatelessWidget {
           borderRadius: BorderRadiusGeometry.circular(16),
         ),
         elevation: 2,
-        color: Color(0xFFF8DCBD),
+        color: item.type == "found" ? Color(0xFFFFD6AC) : Color(0xFF6B8AAE),
         child: Container(
           padding: EdgeInsetsGeometry.all(24),
           child: Flex(
             direction: Axis.horizontal,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            spacing: 16,
             children: [
               Flexible(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      height: 25,
-                      width: 70,
+                      height: 32,
                       decoration: BoxDecoration(
-                        color: Color(0xFFF5AC7C),
+                        color: item.type == "found"
+                            ? Color(0xFF3EC07F)
+                            : Color(0xFFF5AC7C),
                         borderRadius: BorderRadiusGeometry.circular(8),
                       ),
                       child: Center(
                         child: Qstext(
-                          "${item.type.substring(0, 1).toUpperCase()}${item.type.substring(1)}",
+                          "${capitalizePerWords(item.type)}${item.isResolved ? ' (Resolved)' : ''}",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 12,
+                            fontSize: 16,
+                            color: item.type == "found" ? Colors.white : null,
                           ),
                         ),
                       ),
@@ -50,6 +55,7 @@ class LostAndFoundCard extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
+                        color: textColor,
                       ),
                     ),
                     Text(
@@ -60,6 +66,7 @@ class LostAndFoundCard extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                         fontFamily: "Quicksand",
                         fontSize: 12,
+                        color: textColor,
                       ),
                     ),
                     SizedBox(height: 8),
@@ -67,38 +74,19 @@ class LostAndFoundCard extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Icon(Icons.location_on_outlined, color: Colors.red),
-                        Qstext(item.location),
+                        Icon(
+                          Icons.location_on_outlined,
+                          color: item.type == "found"
+                              ? Colors.red
+                              : Color(0xFF00FCAC),
+                        ),
+                        Qstext(
+                          item.location,
+                          style: TextStyle(color: textColor),
+                        ),
                       ],
                     ),
-                  ],
-                ),
-              ),
-              Flexible(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  spacing: 24,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadiusGeometry.circular(16),
-                      child: Hero(
-                        tag: item.id,
-                        child: Image(
-                          image: item.imageProvider,
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) {
-                              return child;
-                            }
-                            return LinearProgressIndicator(
-                              value: loadingProgress.expectedTotalBytes == null
-                                  ? null
-                                  : loadingProgress.cumulativeBytesLoaded /
-                                        loadingProgress.expectedTotalBytes!,
-                            );
-                          },
-                        ),
-                      ),
-                    ),
+                    SizedBox(height: 12),
                     FilledButton(
                       onPressed: () => Navigator.push(
                         context,
@@ -107,11 +95,53 @@ class LostAndFoundCard extends StatelessWidget {
                         ),
                       ),
                       style: FilledButton.styleFrom(
-                        backgroundColor: Color(0xFF00994C),
+                        backgroundColor: item.type == "found"
+                            ? Color(0xFF3EC07F)
+                            : Color(0xFFD53939),
                       ),
                       child: Qstext("View details"),
                     ),
                   ],
+                ),
+              ),
+              Flexible(
+                child: ClipRRect(
+                  borderRadius: BorderRadiusGeometry.circular(16),
+                  child: InkWell(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => LostAndFoundDetails(item),
+                      ),
+                    ),
+                    child: Hero(
+                      tag: item.id,
+                      child: Image(
+                        image: item.imageProvider,
+                        errorBuilder: (context, error, stackTrace) => Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Qstext(
+                            "Image Could not be loaded or no Image provided",
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) {
+                            return child;
+                          }
+                          return LinearProgressIndicator(
+                            value: loadingProgress.expectedTotalBytes == null
+                                ? null
+                                : loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes!,
+                          );
+                        },
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ],

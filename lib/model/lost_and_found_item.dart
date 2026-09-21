@@ -7,6 +7,9 @@ class LostAndFoundItem {
   final String title;
   final String description;
   final String authorId;
+  final String username;
+  final String userSid;
+  final String userPhotoUrl;
   final String type;
   final String location;
   final TimeOfDay time;
@@ -20,15 +23,20 @@ class LostAndFoundItem {
     required this.description,
     required this.isResolved,
     required this.authorId,
+    required this.username,
+    required this.userSid,
+    required this.userPhotoUrl,
     required this.type,
     required this.location,
     required this.time,
     required this.imageProvider,
   });
 
+
+
   Future<void> resolve() async {
     final sbclient = Supabase.instance.client;
-    await sbclient.from("posts").update({"isResolved": true}).eq("id", id);
+    await sbclient.from("postsdata").update({"isResolved": true}).eq("id", id);
     isResolved = true;
   }
 }

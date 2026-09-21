@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 
 class Response extends StatelessWidget {
   final String username;
+  final String sid;
   final String comment;
-  const Response(this.username, this.comment, {super.key});
+  const Response(this.username, this.sid, this.comment, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class Response extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Qstext(
-                    username,
+                    "$username ($sid)",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Qstext(comment),
