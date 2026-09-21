@@ -53,14 +53,14 @@ class _LostAndFoundDetailsState extends State<LostAndFoundDetails> {
                         tag: widget.item.id,
                         child: widget.item.imageProvider == null
                             ? Center(
-                              child: Qstext(
+                                child: Qstext(
                                   "No Image",
                                   style: TextStyle(
                                     fontSize: 24,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                            )
+                              )
                             : Image(
                                 image: widget.item.imageProvider!,
                                 errorBuilder: (context, error, stackTrace) =>

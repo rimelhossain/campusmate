@@ -224,11 +224,9 @@ class _CreatePostState extends State<CreatePost> {
                         onTap: () async {
                           context.read<CmBloc>().add(
                             TimePickedEvent(
-                              await showDialog(
+                              await showTimePicker(
                                 context: context,
-                                builder: (context) => TimePickerDialog(
-                                  initialTime: TimeOfDay.now(),
-                                ),
+                                initialTime: chosenTime ?? TimeOfDay.now(),
                               ),
                             ),
                           );

@@ -265,6 +265,7 @@ class CmBloc extends Bloc<CmEvent, CmState> {
           "author": sbclient.auth.currentUser!.id,
           "lostOrFound": event.type,
           "hasphoto": event.imageFile != null,
+          "time": event.time,
         }).select();
         if (event.imageFile != null) {
           await sbclient.storage

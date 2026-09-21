@@ -31,12 +31,14 @@ class Signup extends StatelessWidget {
           ).showSnackBar(SnackBar(content: Qstext(state.msg)));
           return;
         } else if (state is UnconfirmedEmailState) {
+          FocusManager.instance.primaryFocus?.unfocus();
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (_) => OTP(state.email)),
           );
           return;
         } else if (state is AccountExistsState) {
+          FocusManager.instance.primaryFocus?.unfocus();
           showAdaptiveDialog(
             context: context,
             builder: (ctx) => AlertDialog(
