@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:campusmate/model/lost_and_found_item.dart';
 import 'package:campusmate/model/student.dart';
+import 'package:campusmate/model/study_post.dart';
 import 'package:campusmate/utils/validators.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -265,7 +266,7 @@ class CmBloc extends Bloc<CmEvent, CmState> {
           "author": sbclient.auth.currentUser!.id,
           "lostOrFound": event.type,
           "hasphoto": event.imageFile != null,
-          "time": event.time,
+          "time": "${event.time.hour}:${event.time.minute}:00",
         }).select();
         if (event.imageFile != null) {
           await sbclient.storage
@@ -295,7 +296,7 @@ class CmBloc extends Bloc<CmEvent, CmState> {
             createdAt: DateTime.parse(itemData["created_at"]),
             title: itemData["title"],
             description: itemData["desc"],
-            isResolved: itemData["isResolved"],
+            isResolved: itemData["isresolved"],
             authorId: itemData["author"],
             username: itemData["username"],
             userSid: itemData["sid"],
@@ -363,13 +364,130 @@ class CmBloc extends Bloc<CmEvent, CmState> {
 
     on<ResolvedRequestedEvent>((event, emit) async {
       try {
-        await event.post.resolve();
+        await sbclient
+            .from('postsdata')
+            .update({"isresolved": true})
+            .eq("id", event.postId)
+            .select();
         return emit(ResolveSuccessState());
       } catch (e) {
         if (kDebugMode) {
           print(e);
         }
         return emit(ResolveErrorState("Unknown Error!!"));
+      }
+    });
+
+    on<LoadStudyPostsEvent>((event, emit) async {
+      emit(StudyPostsLoadingState());
+      try {
+        final response = await sbclient
+            .from('study_posts')
+            .select('*')
+            .order('created_at', ascending: false);
+        final posts = response.map((e) => StudyPost.fromJson(e)).toList();
+        emit(StudyPostsLoadedState(posts));
+      } catch (e) {
+        if (kDebugMode) print(e);
+        emit(StudyHelpErrorState("Failed to load study posts."));
+      }
+    });
+
+    on<AddStudyPostEvent>((event, emit) async {
+      emit(StudyPostAddingState());
+      try {
+        await sbclient.from('study_posts').insert({
+          'creator_id': student.id,
+          'creator_name': student.name,
+          'course_topic': event.courseTopic,
+          'description': event.description,
+        });
+        emit(StudyPostAddedSuccessState());
+      } catch (e) {
+        if (kDebugMode) print(e);
+        emit(StudyHelpErrorState("Failed to add study post."));
+      }
+    });
+
+    on<RespondToStudyPostEvent>((event, emit) async {
+      emit(StudyChatInitializingState());
+      try {
+        // Check if chat already exists
+        final existingChat = await sbclient
+            .from('study_chats')
+            .select('*')
+            .eq('post_id', event.postId)
+            .eq('responder_id', student.id)
+            .maybeSingle();
+
+        if (existingChat != null) {
+          emit(StudyChatInitializedState(existingChat['id']));
+          return;
+        }
+
+        final response = await sbclient
+            .from('study_chats')
+            .insert({
+              'post_id': event.postId,
+              'creator_id': event.creatorId,
+              'responder_id': student.id,
+              'responder_name': student.name,
+            })
+            .select()
+            .single();
+
+        emit(StudyChatInitializedState(response['id']));
+      } catch (e) {
+        if (kDebugMode) print(e);
+        emit(StudyHelpErrorState("Failed to initialize chat."));
+      }
+    });
+
+    on<CloseStudyChatEvent>((event, emit) async {
+      try {
+        final chatResponse = await sbclient
+            .from('study_chats')
+            .select('*')
+            .eq('id', event.chatId)
+            .single();
+        bool isCreator = chatResponse['creator_id'] == student.id;
+
+        Map<String, dynamic> updates = {};
+        if (isCreator) {
+          updates['creator_closed'] = true;
+        } else {
+          updates['responder_closed'] = true;
+        }
+
+        bool creatorClosed =
+            updates['creator_closed'] ?? chatResponse['creator_closed'];
+        bool responderClosed =
+            updates['responder_closed'] ?? chatResponse['responder_closed'];
+
+        if (creatorClosed && responderClosed) {
+          // Both closed, mark status as closed
+          updates['status'] = 'closed';
+        }
+        await sbclient
+            .from('study_chats')
+            .update(updates)
+            .eq('id', event.chatId);
+      } catch (e) {
+        if (kDebugMode) print(e);
+        emit(StudyHelpErrorState("Failed to close chat."));
+      }
+    });
+    on<ResolveStudyPostEvent>((event, emit) async {
+      try {
+        await sbclient
+            .from('study_posts')
+            .update({"is_resolved": true})
+            .eq("id", event.postId);
+        // Reload posts after resolving
+        add(LoadStudyPostsEvent());
+      } catch (e) {
+        if (kDebugMode) print(e);
+        emit(StudyHelpErrorState("Failed to resolve post."));
       }
     });
   }

@@ -22,9 +22,16 @@ class _LostAndFoundDetailsState extends State<LostAndFoundDetails> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CmBloc, CmState>(
-      listenWhen: (previous, current) => current is AddResponseErrorState,
+      listenWhen: (previous, current) =>
+          current is AddResponseErrorState || current is ResolveSuccessState,
       listener: (context, state) {
         if (state is AddResponseErrorState) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Qstext(state.msg)));
+        } else if (state is ResolveSuccessState) {
+          widget.item.isResolved = true;
+        } else if (state is ResolveErrorState) {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Qstext(state.msg)));
@@ -91,12 +98,12 @@ class _LostAndFoundDetailsState extends State<LostAndFoundDetails> {
                                       actions: [
                                         TextButton(
                                           onPressed: () {
-                                            Navigator.pop(ctx);
-                                            context.read<CmBloc>().add(
+                                            ctx.read<CmBloc>().add(
                                               ResolvedRequestedEvent(
-                                                widget.item,
+                                                widget.item.id,
                                               ),
                                             );
+                                            Navigator.pop(ctx);
                                           },
                                           child: Qstext(
                                             "Yes, Confirm Resolve",

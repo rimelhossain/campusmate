@@ -107,6 +107,30 @@ final class LoadResponsesEvent extends CmEvent {
 }
 
 final class ResolvedRequestedEvent extends CmEvent {
-  final LostAndFoundItem post;
-  const ResolvedRequestedEvent(this.post);
+  final String postId;
+  const ResolvedRequestedEvent(this.postId);
+}
+
+final class LoadStudyPostsEvent extends CmEvent {}
+
+final class AddStudyPostEvent extends CmEvent {
+  final String courseTopic;
+  final String description;
+  const AddStudyPostEvent(this.courseTopic, this.description);
+}
+
+final class RespondToStudyPostEvent extends CmEvent {
+  final String postId;
+  final String creatorId;
+  const RespondToStudyPostEvent(this.postId, this.creatorId);
+}
+
+final class CloseStudyChatEvent extends CmEvent {
+  final String chatId;
+  const CloseStudyChatEvent(this.chatId);
+}
+
+final class ResolveStudyPostEvent extends CmEvent {
+  final String postId;
+  const ResolveStudyPostEvent(this.postId);
 }

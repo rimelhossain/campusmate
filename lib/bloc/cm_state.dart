@@ -143,3 +143,26 @@ final class ResolveErrorState extends CmState {
 final class ResolveSuccessState extends CmState {}
 
 final class LoadingResponsesState extends CmState {}
+
+final class StudyPostsLoadingState extends CmState {}
+
+final class StudyPostsLoadedState extends CmState {
+  final List<dynamic> posts; // Will hold List<StudyPost>
+  const StudyPostsLoadedState(this.posts);
+}
+
+final class StudyPostAddingState extends CmState {}
+
+final class StudyPostAddedSuccessState extends CmState {}
+
+final class StudyChatInitializingState extends CmState {}
+
+final class StudyChatInitializedState extends CmState {
+  final String chatId;
+  const StudyChatInitializedState(this.chatId);
+}
+
+final class StudyHelpErrorState extends CmState {
+  final String msg;
+  const StudyHelpErrorState(this.msg);
+}
