@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "753466628937",
+    "project_id": "campusmate-binarybrains",
+    "storage_bucket": "campusmate-binarybrains.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:753466628937:android:0d811516201e791d699898",
+        "android_client_info": {
+          "package_name": "com.binarybrains.campusmate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBj1SIEsfQdd_7SEHC8qGmtQG_0Dg1JeC8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
